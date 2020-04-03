@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.*;
+import java.net.ConnectException;
 
 public class LaunchBrowser {
 	
@@ -24,8 +25,8 @@ public class LaunchBrowser {
 
 	public static WebDriver driver = null;
 
-	public static final String input_file = "C:\\Users\\sabar\\Downloads\\03132020_duns_part4.txt";
-	public static final String output_file = "C:\\Users\\sabar\\Downloads\\03132020_duns_part5_output.txt";
+	public static final String input_file = "C:\\Users\\sabar\\Downloads\\duns\\04012020_dunslookup.txt";
+	public static final String output_file = "C:\\Users\\sabar\\Downloads\\duns\\04032020_dunslookup_output.txt";
 	public static FileOutputStream fos;
 	public static Writer out = null;
 	public static BufferedReader inputStream = null;
@@ -53,33 +54,6 @@ public class LaunchBrowser {
 
 			System.out.println("title of page is = " + title);
 
-			// driver.findElement(By.linkText("Member Sign In")).click();
-
-
-			count =0;
-
-			while(count<5) {
-
-				try {
-					System.out.println("current url in tab = "+driver.getCurrentUrl());
-					WebElement email = driver.findElement(By.id("MainContent_Txt_EmailID"));
-					email.sendKeys("duns@registrarcorp.com");
-					WebElement password = driver.findElement(By.id("MainContent_Txt_Password"));
-					password.sendKeys("Sabar1sh$$");
-					driver.findElement(By.id("MainContent_Btn_Login")).click();
-					count += 5;
-				}catch(Exception e) {
-					e.printStackTrace();
-					count++;
-				}
-
-
-			}
-
-			System.out.println("current url in tab = "+driver.getCurrentUrl());
-
-
-			driver.findElement(By.id("MainContent_Btn_Enter")).click();
 
 			fos = new FileOutputStream(output_file);
 			out = new OutputStreamWriter(fos, "utf8");
@@ -96,8 +70,7 @@ public class LaunchBrowser {
 				//driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
 				try{
-
-
+					System.out.println("driver = " + driver);
 					if("https://fdadunslookup.com/".equals(driver.getCurrentUrl())) {
 
 						count =0;
@@ -139,10 +112,6 @@ public class LaunchBrowser {
 
 
 					}
-
-
-
-					
 
 					newline = l.trim();
 					String[] cols = newline.split("\t");
@@ -499,7 +468,13 @@ public class LaunchBrowser {
 
 
 
-				}catch(Exception exx){exx.printStackTrace();}
+				}catch (ConnectException exception) {
+		           System.out.println("Driver connection exception " + exception);
+		           System.out.println("Trying to create new driver");
+		           driver = new ChromeDriver();
+		        }catch(Exception exx){
+		        	exx.printStackTrace();
+		        }
 
 			}
 
