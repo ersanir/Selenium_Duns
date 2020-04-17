@@ -24,54 +24,68 @@ public class LaunchBrowser {
 	//DisplayCandidates.aspx and CreateInvestigation.aspx
 
 	public static WebDriver driver = null;
-
-	public static final String input_file = "C:\\Users\\sabar\\Downloads\\duns\\04012020_dunslookup.txt";
-	public static final String output_file = "C:\\Users\\sabar\\Downloads\\duns\\04032020_dunslookup_output.txt";
+	
+	public static final String input_file = "C:\\Users\\sabar\\Downloads\\duns\\04142020_dunslookup.txt";
+	public static final String output_file = "C:\\Users\\sabar\\Downloads\\duns\\04142020_dunslookup_output.txt";
 	public static FileOutputStream fos;
 	public static Writer out = null;
 	public static BufferedReader inputStream = null;
+	
+	
 
 	public static void main(String[] args) {
 
 		try {
 			System.setProperty("webdriver.chrome.driver", ".\\driver\\chromedriver.exe");
 
-			driver = new ChromeDriver();
-			int count = 0;
-			while(count<5) {
-				try {
-					driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-					count += 5;
-				}catch(Exception e) {
-					e.printStackTrace();
-					count++;
-				}
-			}
-
-			driver.navigate().to("https://fdadunslookup.com/");
-			//driver.manage().window().maximize();
-			String title = driver.getTitle();
-
-			System.out.println("title of page is = " + title);
+			boolean newDriverNeeded = true;
 
 
 			fos = new FileOutputStream(output_file);
 			out = new OutputStreamWriter(fos, "utf8");
 			String l, newline;
 			int countofcols;
-
+			int count = 0;
 			int iter = 0;
 			inputStream = new BufferedReader(new FileReader(input_file));
 
 
 			while ((l = inputStream.readLine()) != null) {
+				
+				
+				
 				boolean lastColumnAppended = false;
 				WebElement lookupAnother = null;
 				//driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 
 				try{
-					System.out.println("driver = " + driver);
-					if("https://fdadunslookup.com/".equals(driver.getCurrentUrl())) {
+					if(newDriverNeeded) {
+						System.out.println("New driver creating after old driver lost connection");
+						driver = new ChromeDriver();
+						count =0;
+						while(count<5) {
+							try {
+								driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+								count += 5;
+							}catch(Exception e) {
+								e.printStackTrace();
+								count++;
+							}
+						}
+			
+						driver.navigate().to("https://fdadunslookup.com/");
+					
+						String title = driver.getTitle();
+			
+						System.out.println("title of page is = " + title);
+						System.out.println("driver = " + driver);
+					
+					}
+					
+					newDriverNeeded = false;
+					
+					
+					if("https://fdadunslookup.com/".equals( driver.getCurrentUrl() ) || driver.getCurrentUrl().indexOf("Login.aspx") > -1 ) {
 
 						count =0;
 
@@ -203,7 +217,7 @@ public class LaunchBrowser {
 						while(count < 15) {
 							try {
 								city = driver.findElement(By.name("ctl00$MainContent$Txt_City"));
-								sendChar(city, cols[5].replaceAll("\"", "").trim());
+								sendChar(city, cols[5].replaceAll("\"", "").replaceAll("-", " ").trim());
 								count += 15;
 							}catch(Exception e) {
 								System.out.println("Exception entering city");
@@ -469,11 +483,13 @@ public class LaunchBrowser {
 
 
 				}catch (ConnectException exception) {
-		           System.out.println("Driver connection exception " + exception);
-		           System.out.println("Trying to create new driver");
-		           driver = new ChromeDriver();
+		           
 		        }catch(Exception exx){
-		        	exx.printStackTrace();
+		        	System.out.println("Driver connection exception " + exx);
+			           System.out.println("Trying to create new driver");
+			         //  driver.quit();
+			           driver=null;
+			           newDriverNeeded = true;
 		        }
 
 			}
