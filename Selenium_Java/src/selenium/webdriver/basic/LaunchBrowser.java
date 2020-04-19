@@ -26,7 +26,7 @@ public class LaunchBrowser {
 	public static WebDriver driver = null;
 	
 	public static final String input_file = "C:\\Users\\sabar\\Downloads\\duns\\04142020_dunslookup.txt";
-	public static final String output_file = "C:\\Users\\sabar\\Downloads\\duns\\04142020_dunslookup_output.txt";
+	public static final String output_file = "C:\\Users\\sabar\\Downloads\\duns\\04142020_dunslookup_output_newlogic.txt";
 	public static FileOutputStream fos;
 	public static Writer out = null;
 	public static BufferedReader inputStream = null;
@@ -136,9 +136,12 @@ public class LaunchBrowser {
 						System.out.println("cols[" + j + "] =" + s);
 						j++;
 					}
-					if (!"DUNS".equals(cols[2])) {
+				
+				
+					
+				if (!"DUNS".equals(cols[2])) {
 						
-						if(driver.getCurrentUrl().indexOf("DUNSValidationOrLookup.aspx") > -1) {
+				if(driver.getCurrentUrl().indexOf("DUNSValidationOrLookup.aspx") > -1) {
 					
 						WebElement duns = null;
 						
@@ -268,16 +271,16 @@ public class LaunchBrowser {
 						count =0;
 
 
-						while(count < 5) {
+						while(count < 3) {
 							try {
-								driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+								driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 								if("CN".equals(cols[8].replace("\"", "")))
 									stateDrpId = "MainContent_DropDown_China_State";
 								else
 									stateDrpId = "MainContent_DropDown_"+cols[8].replace("\"", "").trim()+"_State";
 
 								drpState = new Select(driver.findElement(By.id(stateDrpId)));
-								count += 5;
+								count += 3;
 							} catch (Exception e) {
 								System.out.println("moving on from company state exception for dropdown");
 								e.printStackTrace();
@@ -370,8 +373,8 @@ public class LaunchBrowser {
 								l = l.concat("\tYes");
 								//out.write(l);
 								System.out.println("Validation successful....looking up next company");
-								lookupAnother = driver.findElement(By.name("ctl00$MainContent$Btn_Clear"));
-								lookupAnother.click();
+								//lookupAnother = driver.findElement(By.name("ctl00$MainContent$Btn_Clear"));
+								//lookupAnother.click();
 
 							}
 
@@ -394,7 +397,7 @@ public class LaunchBrowser {
 							count = 0;
 							while(count<5) {
 								try {
-									driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+									driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 									clearFields = driver.findElement(By.name("ctl00$MainContent$Btn_Clear"));
 									clearFields.click();
 									if(!lastColumnAppended)
@@ -452,7 +455,7 @@ public class LaunchBrowser {
 							}
 							count = 0;
 
-							while(count<5) {
+							/*while(count<5) {
 
 								try {
 									System.out.println("Validation failed....looking up next company");
@@ -466,7 +469,7 @@ public class LaunchBrowser {
 									count++;
 								}
 
-							}
+							}*/
 							
 							
 							}
@@ -479,6 +482,8 @@ public class LaunchBrowser {
 
 					l = l.concat("\n");
 					out.write(l);
+					
+					driver.navigate().to("https://fdadunslookup.com/Disclaimer.aspx");
 
 
 
