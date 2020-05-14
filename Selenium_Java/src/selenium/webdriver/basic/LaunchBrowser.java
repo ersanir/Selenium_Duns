@@ -25,8 +25,8 @@ public class LaunchBrowser {
 
 	public static WebDriver driver = null;
 	
-	public static final String input_file = "C:\\Users\\sabar\\Downloads\\duns\\04142020_dunslookup.txt";
-	public static final String output_file = "C:\\Users\\sabar\\Downloads\\duns\\04142020_dunslookup_output_newlogic.txt";
+	public static final String input_file = "C:\\Users\\sabar\\Downloads\\duns\\04192020_dunslookup.txt";
+	public static final String output_file = "C:\\Users\\sabar\\Downloads\\duns\\04192020_dunslookup_output_2.txt";
 	public static FileOutputStream fos;
 	public static Writer out = null;
 	public static BufferedReader inputStream = null;
@@ -60,7 +60,7 @@ public class LaunchBrowser {
 
 				try{
 					if(newDriverNeeded) {
-						System.out.println("New driver creating after old driver lost connection");
+						System.out.println("New driver creating....");
 						driver = new ChromeDriver();
 						count =0;
 						while(count<5) {
@@ -395,7 +395,7 @@ public class LaunchBrowser {
 
 
 							count = 0;
-							while(count<5) {
+							while(count<3) {
 								try {
 									driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 									clearFields = driver.findElement(By.name("ctl00$MainContent$Btn_Clear"));
@@ -403,7 +403,7 @@ public class LaunchBrowser {
 									if(!lastColumnAppended)
 										l = l.concat("\tIncorrect Company Info");
 									lastColumnAppended = true;
-									count += 5;
+									count += 3;
 
 
 								}catch(Exception e) {
