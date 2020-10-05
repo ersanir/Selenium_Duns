@@ -25,8 +25,8 @@ public class LaunchBrowser {
 
 	public static WebDriver driver = null;
 	
-	public static final String input_file = "C:\\Users\\sabar\\Downloads\\duns\\04192020_dunslookup.txt";
-	public static final String output_file = "C:\\Users\\sabar\\Downloads\\duns\\04192020_dunslookup_output_2.txt";
+	public static final String input_file = "C:\\Users\\sabar\\Downloads\\duns\\10042020_usregservice_duns.txt";
+	public static final String output_file = "C:\\Users\\sabar\\Downloads\\duns\\10042020_usregservice_duns_output.txt";
 	public static FileOutputStream fos;
 	public static Writer out = null;
 	public static BufferedReader inputStream = null;
@@ -96,7 +96,7 @@ public class LaunchBrowser {
 								WebElement email = driver.findElement(By.id("MainContent_Txt_EmailID"));
 								email.sendKeys("duns@registrarcorp.com");
 								WebElement password = driver.findElement(By.id("MainContent_Txt_Password"));
-								password.sendKeys("Sabar1sh$$");
+								password.sendKeys("Sabar1sh$$$");
 								driver.findElement(By.id("MainContent_Btn_Login")).click();
 								count += 5;
 							}catch(Exception e) {
@@ -160,12 +160,12 @@ public class LaunchBrowser {
 
 
 
-						while(count < 15) {
+						while(count < 5) {
 							try{
 								duns = driver.findElement(By.name("ctl00$MainContent$Txt_DUNS"));
 								if(! "".equals(dunsNum))
 									sendChar(duns, dunsNum);
-								count += 15;
+								count += 5;
 							}catch(Exception e) {
 								e.printStackTrace();
 								System.out.println("Exception adding duns number..trying again");
@@ -175,7 +175,7 @@ public class LaunchBrowser {
 						}
 
 						String companyName = cols[1].replace("\"", "").replace("'", "\'").trim();
-						System.out.println("efiing company name = " + companyName);
+						
 
 
 
@@ -195,16 +195,16 @@ public class LaunchBrowser {
 
 						// sendChar(name, companyName);
 						String companyAddress = cols[3].replace("\"", "").trim() + " " + cols[4].replace("\"", "").trim();
-						System.out.println("effing companyAddress = " + companyAddress);
+						
 						count = 0;
-						while (count < 15) {
+						while (count < 5) {
 							try {
 
 								address = driver.findElement(By.id("Txt_Address1"));
 								address.click();
 								//runJS.executeScript("arguments[0].value='" + companyAddress + "';", address);
 								sendChar(address, companyAddress);
-								count = count + 15;
+								count = count + 5;
 							} catch (Exception e) {
 
 								e.toString();
@@ -217,11 +217,11 @@ public class LaunchBrowser {
 						}
 						count =0;
 						WebElement city =null;
-						while(count < 15) {
+						while(count < 5) {
 							try {
 								city = driver.findElement(By.name("ctl00$MainContent$Txt_City"));
 								sendChar(city, cols[5].replaceAll("\"", "").replaceAll("-", " ").trim());
-								count += 15;
+								count += 5;
 							}catch(Exception e) {
 								System.out.println("Exception entering city");
 								count += 1;
@@ -230,7 +230,7 @@ public class LaunchBrowser {
 						}
 						Select drpCountry = null;
 						count = 0;
-						while(count < 15) {
+						while(count < 5) {
 							try {	
 								drpCountry =  new Select(driver.findElement(By.name("ctl00$MainContent$DropDown_Country")));
 								if("UK".equals(cols[8].replace("\"", "").trim()))
@@ -238,7 +238,7 @@ public class LaunchBrowser {
 								else
 									drpCountry.selectByValue(cols[8].replace("\"", "").trim());
 								System.out.println("drpCountry = " + drpCountry);
-								count += 15;
+								count += 5;
 							}catch(Exception e) {
 								System.out.println("exception in finding country dropdown...trying again...");
 								count +=1;
@@ -247,12 +247,12 @@ public class LaunchBrowser {
 
 
 						count = 0;
-						while(count < 15) {
+						while(count < 5) {
 							try {
 								driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
 								duns = driver.findElement(By.name("ctl00$MainContent$Txt_DUNS"));
 								duns.click();
-								count += 15;
+								count += 5;
 							}catch(Exception e) {
 								System.out.println("exception in finding country dropdown...trying again...");
 								count +=1;
@@ -284,7 +284,7 @@ public class LaunchBrowser {
 							} catch (Exception e) {
 								System.out.println("moving on from company state exception for dropdown");
 								e.printStackTrace();
-								count ++;
+								count += 1;
 							}
 
 						}
@@ -323,11 +323,11 @@ public class LaunchBrowser {
 
 
 						count = 0;
-						while(count < 15) {
+						while(count < 5) {
 							try {
 								zipCode = driver.findElement(By.name("ctl00$MainContent$Txt_ZipCode"));
 								sendChar(zipCode, cols[7].replaceAll("\\s", "").trim());
-								count += 15;
+								count += 5;
 							}catch(Exception e) {
 								System.out.println("exception in finding country dropdown...trying again...");
 								count +=1;
